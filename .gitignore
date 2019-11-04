@@ -1,0 +1,14 @@
+secret_key
+*.pyc
+*.rb
+*.log*
+.idea/
+.vscode/
+*.sqlite3
+starlight-frb.conf
+*~
+node_modules/
+app/static/dist/
+export_db.sql
+.DS_Store
+instance/
