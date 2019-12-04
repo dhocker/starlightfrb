@@ -37,7 +37,7 @@ server {
     location / { try_files $uri @frbapp; }
     location @frbapp {
         include uwsgi_params;
-        uwsgi_pass unix:/var/uwsgi/starlight-frb.sock;
+        uwsgi_pass unix:/var/uwsgi/starlightfrb.sock;
     }
 
 	#error_page 404 /404.html;
