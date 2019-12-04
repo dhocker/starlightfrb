@@ -176,6 +176,7 @@ export class ScriptControl extends React.Component {
                 Run
               </Button>
               <Button className="btn btn-primary btn-sm btn-extra btn-extra-vert" onClick={this.onStop}
+                disabled={disabled}
               >
                 Stop
               </Button>
