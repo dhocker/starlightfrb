@@ -72,3 +72,14 @@ def stop_script(server, server_port):
         response = None
 
     return response
+
+def shutdown_controller(server, server_port):
+    client = AtHomeClient()
+    if client.connect(server, server_port):
+        client.send_command("shutdown")
+        response = client.receive_response()
+        client.close()
+    else:
+        response = None
+
+    return response

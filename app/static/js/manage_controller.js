@@ -46,6 +46,7 @@ export class ManageController extends BaseComponent {
         this.onDialogCancel = this.onDialogCancel.bind(this);
         this.onRun = this.onRun.bind(this);
         this.onStop = this.onStop.bind(this);
+        this.onShutdown = this.onShutdown.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
     }
@@ -176,11 +177,36 @@ export class ManageController extends BaseComponent {
     }
 
     onStop() {
-      console.log("manager_controller:onRun");
+      console.log("manager_controller:onStop");
       this.getControllerStatus(this.state.id);
     }
 
+    onShutdown() {
+        const $this = this;
+        console.log("Shutdown: " + this.state.id);
+        const url = `/controller/${this.state.id}/state/shutdown`;
+        this.serverRequest = $.ajax({
+            type: "PUT",
+            url: url,
+            data: "",
+            success: function (result) {
+                console.log(result);
+                $this.getControllerStatus($this.state.id);
+            },
+            error: function (xhr, status, errorThrown) {
+                console.log(status);
+                console.log(errorThrown);
+                // Show user error
+//                const errormsg = "That author already exists: " + $this.state.lastnameValue +
+//                    ", " + $this.state.firstnameValue;
+//                errordlg.showErrorDialog("Duplicate Author", errormsg);
+                // Note that the dialog box is left open so the user can fix the error
+            }
+        });
+    }
+
     render() {
+        const disabled = this.state.scriptfile === "";
         return (
             <div className="container">
               <h2>{this.state.title}</h2>
@@ -190,7 +216,16 @@ export class ManageController extends BaseComponent {
                 <div className="card-header">
                   <h3>Status</h3>
                 </div>
-                {this.generateStatus()}
+                <div className="card-body">
+                  {this.generateStatus()}
+                </div>
+                <div className="card-footer">
+                  <Button className="btn btn-primary btn-sm btn-extra btn-extra-vert" onClick={this.onShutdown}
+                    disabled={disabled}
+                  >
+                    Shutdown
+                  </Button>
+                </div>
               </div>
 
               {this.generateScriptControl()}

@@ -42,7 +42,7 @@ from flask import jsonify, request, make_response
 from configuration import Configuration
 import logging
 from app.models.controllers import Controllers
-from app.models.client_commands import get_status, get_scriptlist, run_script, stop_script
+from app.models.client_commands import get_status, get_scriptlist, run_script, stop_script, shutdown_controller
 
 
 logger = logging.getLogger("app")
@@ -123,6 +123,17 @@ def state_stop_script(id):
     """
     cr = Controllers.get_controller(id)
     response = stop_script(cr["host"], cr["port"])
+    return jsonify(response)
+
+
+@app.route("/controller/<id>/state/shutdown", methods=['PUT'])
+def state_shutdown_controller(id):
+    """
+    Shutdown a controller
+    :return:
+    """
+    cr = Controllers.get_controller(id)
+    response = shutdown_controller(cr["host"], cr["port"])
     return jsonify(response)
 
 @app.route('/controllers', methods=['POST'])
